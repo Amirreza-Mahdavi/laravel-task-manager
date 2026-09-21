@@ -28,10 +28,7 @@ return new class extends Migration {
         ADD CONSTRAINT tasks_priority_check
         CHECK (priority IN ('LOW', 'MEDIUM', 'HIGH'))");
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('tasks');
