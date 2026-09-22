@@ -12,8 +12,18 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
+
+    public function assignments() {
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
