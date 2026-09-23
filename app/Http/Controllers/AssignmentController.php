@@ -15,6 +15,7 @@ class AssignmentController extends Controller {
     ){}
 
     public function store(AssignTaskRequest $request, Task $task): JsonResponse {
+       $this->authorize('update', $task);
         $assignment = $this->assignmentService->assignTask($task, User::findOrFail($request->validated('user_id')));
 
         return response()->json([
