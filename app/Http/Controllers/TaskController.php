@@ -28,18 +28,22 @@ class TaskController extends Controller {
     }
 
     public function storeSubtask(CreateTaskRequest $request, Task $task): taskResource {
+        $this->authorize('update', $task);
         $subtask = $this->taskService->createSubtask($request->user(), $task, $request->validated());
 
         return new taskResource($subtask);
     }
 
     public function update(CreateTaskRequest $request, Task $task): taskResource {
+        $this->authorize('update', $task);
         $task = $this->taskService->updateTask($task, $request->validated());
 
         return new taskResource($task);
     }
 
     public function destroy(Task $task): JsonResponse {
+        $this->authorize('delete', $task);
+
         $this->taskService->deleteTask($task);
 
         return response()->json([
