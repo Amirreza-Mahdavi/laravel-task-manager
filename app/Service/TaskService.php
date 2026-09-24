@@ -33,4 +33,11 @@ class TaskService {
 
         $task->delete();
     }
+
+    public function getUserTasks(User $user)
+{
+    return $user->tasks()
+        ->latest()
+        ->get();
+}
 }
