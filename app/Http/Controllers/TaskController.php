@@ -21,7 +21,7 @@ class TaskController extends Controller {
         return taskResource::collection($tasks);
     }
 
-    public function storeTask(CreateTaskRequest $request): taskResource {
+    public function store(CreateTaskRequest $request): taskResource {
         $task = $this->taskService->createTask($request->user(), $request->validated());
 
         return new taskResource($task);
