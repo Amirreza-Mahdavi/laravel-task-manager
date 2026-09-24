@@ -14,7 +14,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('tasks', TaskController::class);
+    //Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('tasks', TaskController::class)
+    ->names('api.tasks');
 
     Route::post(
         '/tasks/{task}/subtasks',
