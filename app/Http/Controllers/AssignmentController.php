@@ -23,6 +23,4 @@ class AssignmentController extends Controller {
             'assignment' => $assignment,
         ], 201);
     }
-    
-    
 }

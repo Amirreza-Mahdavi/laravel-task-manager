@@ -7,8 +7,8 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Nette\Schema\ValidationException;
-use Illuminate\Http\Controllers\Hash;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
     public function register(RegisterRequest $request): JsonResponse {
@@ -31,7 +31,7 @@ class AuthController extends Controller {
 
         $user = User::where('email', $data['email'])->first();
 
-        if(!$user || !Hash::check($data['$password'], $user->password)) {
+        if(!$user || !Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect'],
             ]);
@@ -57,6 +57,4 @@ class AuthController extends Controller {
             'message' => 'Logged out successfully',
         ]);
     }
-
-    
 }
