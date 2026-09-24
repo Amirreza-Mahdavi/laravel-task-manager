@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -18,5 +19,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/tasks/{task}/subtasks',
         [TaskController::class, 'storeSubtask']
+    );
+
+    Route::post(
+        '/tasks/{userId}/assign/{taskId}', 
+        [AssignmentController::class, 'assignTask']
     );
 });
