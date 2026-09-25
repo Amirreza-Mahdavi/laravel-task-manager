@@ -1,58 +1,200 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Task Manager
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A role-based task management application built with **Laravel**, **PostgreSQL**, **Blade**, and **Laravel Sanctum**.
 
-## About Laravel
+The project provides a web interface for managing tasks, user authentication, role-based access, task assignments, task relationships, and a RESTful API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The application was built with a layered architecture to keep routing, validation, authorization, business logic, and persistence separated.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+### Authentication
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- User registration
+- User login
+- User logout
+- Session-based authentication for the web application
+- API authentication using Laravel Sanctum
+- Password hashing using Laravel's built-in password hashing support
+- CSRF protection for web forms
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Task Management
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Create tasks
+- View tasks
+- Delete tasks
+- Task descriptions
+- Task priorities
+- Task statuses
+- Due dates
+- Parent tasks and subtasks
 
-## Agentic Development
+### User Roles
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+The application currently supports two roles:
+
+- **Admin**
+- **Member**
+
+#### Member
+
+Members can:
+
+- View their tasks
+- Create their own tasks
+- View tasks assigned to them
+- Delete tasks when authorized
+
+#### Admin
+
+Admins can:
+
+- Access the admin task interface
+- Create tasks
+- Assign tasks to members
+- View their own created tasks
+- View assigned tasks
+
+# Installation
+
+## 1. Clone the repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Amirreza-Mahdavi/laravel-task-manager.git
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Move into the project:
 
-## Contributing
+```bash
+cd laravel-task-manager
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 2. Install PHP dependencies
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 4. Create the environment file
 
-## License
+```bash
+cp .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Generate the Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+---
+
+# Database Configuration
+
+The project uses PostgreSQL.
+
+Create a PostgreSQL database, for example:
+
+```text
+task_manager
+```
+
+Then configure your `.env` file:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=task_manager
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+Update the credentials to match your local PostgreSQL installation.
+
+---
+
+# Run Migrations
+
+After configuring the database:
+
+```bash
+php artisan migrate
+```
+
+This creates the required database tables.
+
+---
+
+# Creating Roles and Users
+
+The application uses roles such as:
+
+```text
+admin
+member
+```
+
+Start Tinker:
+
+```bash
+php artisan tinker
+```
+
+Create the roles:
+
+```php
+$adminRole = App\Models\Role::create([
+    'name' => 'admin',
+]);
+
+$memberRole = App\Models\Role::create([
+    'name' => 'member',
+]);
+```
+
+Create an admins:
+
+```php
+$admin = App\Models\User::create([
+    'role_id' => $adminRole->id,
+    'name' => 'Admin',
+    'email' => 'admin@example.com',
+    'password' => 'password123',
+]);
+```
+
+Create a member:
+
+```php
+$member = App\Models\User::create([
+    'role_id' => $memberRole->id,
+    'name' => 'John Member',
+    'email' => 'member@example.com',
+    'password' => 'password123',
+]);
+```
+
+---
+
+# Running the Application
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+The application will normally be available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
