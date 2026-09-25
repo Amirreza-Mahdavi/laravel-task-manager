@@ -55,3 +55,18 @@ Route::middleware('auth')->group(function () {
         ->name('tasks.destroy');
 
 });
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/tasks', [\App\Http\Controllers\Admin\TaskController::class, 'index'])
+            ->name('tasks.index');
+
+        Route::get('/tasks/create', [\App\Http\Controllers\Admin\TaskController::class, 'create'])
+            ->name('tasks.create');
+
+        Route::post('/tasks', [\App\Http\Controllers\Admin\TaskController::class, 'store'])
+            ->name('tasks.store');
+    });
