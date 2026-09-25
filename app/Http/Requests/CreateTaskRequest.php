@@ -20,7 +20,8 @@ class CreateTaskRequest extends FormRequest {
             'description' => ['nullable', 'string'],
             'status' => ['required', new Enum(TaskStatus::class)],
             'priority' => ['required', new Enum(TaskPriority::class)],
-            'due_date' => ['required', 'date'],
+            'due_date' => ['nullable', 'date'],
+            'user_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }
