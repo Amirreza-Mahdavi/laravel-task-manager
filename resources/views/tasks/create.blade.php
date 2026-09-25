@@ -63,9 +63,9 @@
                         TODO
                     </option>
 
-                    <option value="IN_PROGRESS"
-                        {{ old('status') === 'IN_PROGRESS' ? 'selected' : '' }}>
-                        In Progress
+                    <option value="DOING"
+                        {{ old('status') === 'DOING' ? 'selected' : '' }}>
+                        DOING
                     </option>
 
                     <option value="DONE"
