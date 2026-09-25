@@ -4,19 +4,36 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class TaskPolicy {
+class TaskPolicy
+{
+    public function view(User $user, Task $task): bool
+    {
+        // Admin can view tasks they created
+        if ($user->role?->name === 'admin' && $task->user_id === $user->id) {
+            return true;
+        }
 
-    public function view(User $user, Task $task): bool{
-        return $task->user_id === $user->id;
+        // Anyone can view a task assigned to them
+        return $task->assignedUsers()
+            ->where('users.id', $user->id)
+            ->exists();
     }
 
     public function update(User $user, Task $task): bool {
-        return $task->user_id === $user->id;
+        if ($user->role?->name === 'admin' && $task->user_id === $user->id) {
+            return true;
+        }
+
+        
+        return $task->assignedUsers()
+            ->where('users.id', $user->id)
+            ->exists();
     }
 
     public function delete(User $user, Task $task): bool {
-        return $task->user_id === $user->id;
+
+        return $user->role?->name === 'admin'
+            && $task->user_id === $user->id;
     }
 }
